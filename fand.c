@@ -1,4 +1,4 @@
-/* fan control daemon V 0.1 */
+/* fan control daemon */
 
 #include <stdio.h>
 #include <stdlib.h>
