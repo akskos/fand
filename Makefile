@@ -1,2 +1,2 @@
 all:
-	gcc -o tempd tempd.c
+	gcc -o fand fand.c
