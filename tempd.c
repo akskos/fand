@@ -13,10 +13,8 @@
 #define CPU_1_TEMP "/sys/devices/platform/coretemp.0/hwmon/hwmon0/temp2_input"
 #define CPU_2_TEMP "/sys/devices/platform/coretemp.0/hwmon/hwmon0/temp3_input"
 
-#define FAN_1_SPEED_IN "/sys/devices/platform/applesmc.768/fan1_input"
-#define FAN_1_SPEED_OUT "/sys/devices/platform/applesmc.768/fan1_output"
-#define FAN_2_SPEED_IN "/sys/devices/platform/applesmc.768/fan2_input"
-#define FAN_2_SPEED_OUT "/sys/devices/platform/applesmc.768/fan2_output"
+#define FAN_1_SPEED "/sys/devices/platform/applesmc.768/fan1_output"
+#define FAN_2_SPEED "/sys/devices/platform/applesmc.768/fan2_output"
 #define FAN_1_MIN "/sys/devices/platform/applesmc.768/fan1_min"
 #define FAN_2_MIN "/sys/devices/platform/applesmc.768/fan2_min"
 
@@ -55,8 +53,8 @@ int main() {
 		fanspeed = minmax_fanspeed(fanspeed);
 
 		if (fanspeed != old_fanspeed) {
-			write_fan_speed(FAN_1_SPEED_OUT, fanspeed);
-			write_fan_speed(FAN_2_SPEED_OUT, fanspeed);
+			write_fan_speed(FAN_1_SPEED, fanspeed);
+			write_fan_speed(FAN_2_SPEED, fanspeed);
 			old_fanspeed = fanspeed;
 		}
 
