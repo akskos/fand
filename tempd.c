@@ -5,6 +5,7 @@
 #include <syslog.h>
 #include <string.h>
 #include <unistd.h>
+#include <signal.h>
 
 #define FAN_1_MANUAL "/sys/devices/platform/applesmc.768/fan1_manual"
 #define FAN_2_MANUAL "/sys/devices/platform/applesmc.768/fan2_manual"
@@ -24,6 +25,7 @@ int read_cpu_temp(const char *cpu_path);
 void write_fan_manual(const char *fan_manual_path, int manual);
 void write_fan_speed(const char *fan_speed_path, int speed);
 int minmax_fanspeed(int fanspeed);
+void signal_handler(int sig);
 
 int main() {
 
@@ -31,6 +33,9 @@ int main() {
 
 	write_fan_manual(FAN_1_MANUAL, 1);
 	write_fan_manual(FAN_2_MANUAL, 1);
+
+	signal(SIGTERM, signal_handler);
+	signal(SIGINT, signal_handler);
 
 	for (;;) {
 		int cpu_1_temp = read_cpu_temp(CPU_1_TEMP) / 1000;
@@ -101,4 +106,10 @@ int minmax_fanspeed(int fanspeed) {
 		return MIN_SPEED;
 	}
 	return fanspeed;
+}
+
+void signal_handler(int sig) {
+	write_fan_manual(FAN_1_MANUAL, 0);
+	write_fan_manual(FAN_2_MANUAL, 0);
+	exit(0);
 }
