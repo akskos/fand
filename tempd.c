@@ -74,6 +74,7 @@ void write_fan_manual(const char *fan_manual_path, int manual) {
 	FILE *file;
 	if ((file = fopen(fan_manual_path, "w")) != NULL) {
 		fprintf(file, "%d", manual);
+		fclose(file);
 	} else {
 		syslog(LOG_ERR, "Failed to write to %s", fan_manual_path);
 		exit(1);
