@@ -17,13 +17,16 @@
 #define FAN_1_SPEED_OUT "/sys/devices/platform/applesmc.768/fan1_output"
 #define FAN_2_SPEED_IN "/sys/devices/platform/applesmc.768/fan2_input"
 #define FAN_2_SPEED_OUT "/sys/devices/platform/applesmc.768/fan2_output"
+#define FAN_1_MIN "/sys/devices/platform/applesmc.768/fan1_min"
+#define FAN_2_MIN "/sys/devices/platform/applesmc.768/fan2_min"
 
-#define MIN_SPEED 2000
+#define MIN_SPEED 1500
 #define MAX_SPEED 5800
 
 int read_cpu_temp(const char *cpu_path);
 void write_fan_manual(const char *fan_manual_path, int manual);
 void write_fan_speed(const char *fan_speed_path, int speed);
+void write_fan_min_speed(const char *fan_min_speed_path, int speed);
 int minmax_fanspeed(int fanspeed);
 void signal_handler(int sig);
 
@@ -33,6 +36,8 @@ int main() {
 
 	write_fan_manual(FAN_1_MANUAL, 1);
 	write_fan_manual(FAN_2_MANUAL, 1);
+	write_fan_min_speed(FAN_1_MIN, 1500);
+	write_fan_min_speed(FAN_2_MIN, 1500);
 
 	signal(SIGTERM, signal_handler);
 	signal(SIGINT, signal_handler);
@@ -94,6 +99,18 @@ void write_fan_speed(const char *fan_speed_path, int speed) {
 		fclose(file);
 	} else {
 		syslog(LOG_ERR, "Failed to write to %s", fan_speed_path);
+		exit(1);
+	}
+}
+
+void write_fan_min_speed(const char *fan_min_speed_path, int speed) {
+	FILE *file;
+
+	if ((file = fopen(fan_min_speed_path, "w")) != NULL) {
+		fprintf(file, "%d", speed);
+		fclose(file);
+	} else {
+		syslog(LOG_ERR, "Failed to write to %s", fan_min_speed_path);
 		exit(1);
 	}
 }
