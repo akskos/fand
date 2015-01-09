@@ -1,4 +1,4 @@
-/* temperature daemon V 0.1 */
+/* fan control daemon V 0.1 */
 
 #include <stdio.h>
 #include <stdlib.h>
